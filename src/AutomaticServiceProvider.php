@@ -1,6 +1,6 @@
 <?php
 
-namespace Lagdo\Backpack\Dbadmin;
+namespace Lagdo\Dbadmin\Backpack;
 
 use Backpack\CRUD\ViewNamespaces;
 

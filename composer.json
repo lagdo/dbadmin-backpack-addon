@@ -15,7 +15,16 @@
     ],
     "require": {
         "illuminate/support": "^12.0",
-        "backpack/crud": "^7.0"
+        "backpack/crud": "^7.0",
+        "infisical/php-sdk": "^0.0.1",
+        "jaxon-php/jaxon-laravel": "^5.0",
+        "jaxon-php/jaxon-upload": "^2.1",
+        "lagdo/dbadmin-driver-mysql": "0.22.*",
+        "lagdo/dbadmin-driver-pgsql": "0.22.*",
+        "lagdo/dbadmin-driver-sqlite": "0.22.*",
+        "lagdo/jaxon-dbadmin": "0.29.*",
+        "lagdo/laravel-facades": "^1.0",
+        "lagdo/ui-builder-bootstrap5": "0.5.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.5.3"
