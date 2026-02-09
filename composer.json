@@ -1,7 +1,7 @@
 {
     "name": "lagdo/dbadmin-backpack-addon",
     "description": "Jaxon DbAdmin addon for Backpack",
-    "license": "Apache",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Thierry Feuzeu",
