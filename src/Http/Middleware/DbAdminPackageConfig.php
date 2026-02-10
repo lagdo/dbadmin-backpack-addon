@@ -32,8 +32,8 @@ class DbAdminPackageConfig
                     'audit' => $auditOptions,
                 ],
             ],
-            'jaxon.lib.core.request.uri' => route('dbadmin.jaxon'),
-            'jaxon.app.assets.file' => 'admin-0.1.0',
+            'jaxon.lib.core.request.uri' => route(name: 'dbadmin.jaxon', absolute: false),
+            'jaxon.app.assets.file' => 'admin-0.1.1',
         ]);
 
         return $next($request);

@@ -32,8 +32,8 @@ class DbAuditPackageConfig
                     ...$auditOptions,
                 ],
             ],
-            'jaxon.lib.core.request.uri' => route('dbaudit.jaxon'),
-            'jaxon.app.assets.file' => 'audit-0.1.0',
+            'jaxon.lib.core.request.uri' => route(name: 'dbaudit.jaxon', absolute: false),
+            'jaxon.app.assets.file' => 'audit-0.1.1',
         ]);
 
         return $next($request);
