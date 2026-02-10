@@ -96,9 +96,9 @@ trait AutomaticServiceProvider
      */
     public function register(): void
     {
-        if ($this->packageDirectoryExistsAndIsNotEmpty('config')) {
-            $this->mergeConfigFrom($this->packageConfigFile(), $this->vendorNameDotPackageName());
-        }
+        // if ($this->packageDirectoryExistsAndIsNotEmpty('config')) {
+        //     $this->mergeConfigFrom($this->packageConfigFile(), $this->vendorNameDotPackageName());
+        // }
     }
 
     /**
@@ -109,11 +109,11 @@ trait AutomaticServiceProvider
     protected function bootForConsole(): void
     {
         // Publishing the configuration file.
-        if ($this->packageDirectoryExistsAndIsNotEmpty('config')) {
-            $this->publishes([
-                $this->packageConfigFile() => $this->publishedConfigFile(),
-            ], 'config');
-        }
+        // if ($this->packageDirectoryExistsAndIsNotEmpty('config')) {
+        //     $this->publishes([
+        //         $this->packageConfigFile() => $this->publishedConfigFile(),
+        //     ], 'config');
+        // }
 
         // Publishing the views.
         if ($this->packageDirectoryExistsAndIsNotEmpty('resources/views')) {

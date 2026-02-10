@@ -107,6 +107,12 @@ class DbAdminServiceProvider extends ServiceProvider
         // Call the boot() method from the AutomaticServiceProvider trait.
         $this->bootPackage();
 
+        // Publish the default config files.
+        $this->publishes([
+            __DIR__ . '/../config/jaxon.php' => config_path('jaxon.php'),
+            __DIR__ . '/../config/dbadmin.php' => config_path('dbadmin.php'),
+        ]);
+
         // Set the path to the user access config file.
         jaxon()->callback()->boot(fn() => jaxon()->di()
             ->g(UserFileReader::class)
