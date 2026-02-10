@@ -9,6 +9,9 @@
     #jaxon-dbadmin .row, .modal-dialog .row {
       margin-bottom: 10px;
     }
+    #jaxon-dbadmin table.table {
+      margin-bottom: 16px;
+    }
     #jaxon-dbadmin .btn {
       min-width: 0;
       min-height: 0;
@@ -31,7 +34,7 @@
   <div class="card-body">
     <div style="margin:0 -10px; padding:5px; background-color:white; border-radius:5px;">
       <div style="margin-left:5px">
-        <h2>Jaxon Audit Logs</h2>
+        <h2>Jaxon DbAdmin Audit Logs</h2>
       </div>
       <div>
         {!! jaxon()->package(Lagdo\DbAdmin\Db\DbAuditPackage::class)->layout() !!}
