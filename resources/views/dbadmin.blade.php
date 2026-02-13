@@ -30,11 +30,6 @@
 @endpush
 
 @section('content')
-<!-- base: {!! base_path() !!} -->
-<!-- app: {!! app_path() !!} -->
-<!-- storage: {!! storage_path() !!} -->
-<!-- config: {!! config_path() !!} -->
-<!-- public: {!! public_path() !!} -->
 <div class="card">
   <div class="card-body">
     <div style="margin:0 -10px; padding:5px; background-color:white; border-radius:5px;">
