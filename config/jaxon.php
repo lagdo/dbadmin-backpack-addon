@@ -1,7 +1,7 @@
 <?php
 
 use Jaxon\Di\Container;
-use Lagdo\DbAdmin\Db\Config\UserFileReader;
+use Lagdo\DbAdmin\Db\Config\ConfigProvider;
 use Lagdo\DbAdmin\Db\DbAdminPackage;
 
 return [
@@ -19,7 +19,7 @@ return [
                     'lib' => 'notyf',
                 ],
                 'provider' => function(array $options, Container $di) {
-                    $reader = $di->g(UserFileReader::class);
+                    $reader = $di->g(ConfigProvider::class);
                     return $reader->getOptions($options);
                 },
                 'access' => [

@@ -14,7 +14,7 @@ use Lagdo\Dbadmin\Backpack\Http\Middleware\DbAdminPackageConfig;
 use Lagdo\Dbadmin\Backpack\Http\Middleware\DbAuditPackageConfig;
 use Lagdo\Dbadmin\Backpack\Http\Middleware\BackpackUserResolver;
 use Lagdo\DbAdmin\Db\Config\AuthInterface;
-use Lagdo\DbAdmin\Db\Config\UserFileReader;
+use Lagdo\DbAdmin\Db\Config\ConfigProvider;
 use Lagdo\DbAdmin\Db\Driver\Exception\DbException;
 use Symfony\Component\HttpFoundation\Response;
 use Exception;
@@ -115,7 +115,7 @@ class DbAdminServiceProvider extends ServiceProvider
 
         // Set the path to the user access config file.
         jaxon()->callback()->boot(fn() => jaxon()->di()
-            ->g(UserFileReader::class)
+            ->g(ConfigProvider::class)
             ->config($this->getDbAdminConfigFile()));
 
         // Auth gate for the DbAdmin audit page
