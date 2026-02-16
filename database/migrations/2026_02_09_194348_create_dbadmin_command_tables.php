@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Check if the audit logs feature is enabled.
+     * Check if the audit logs recording is enabled.
      */
-    private function auditEnabled(): bool
+    private function queryRecordEnabled(): bool
     {
-        return config('dbadmin.audit.enduser.enabled') ||
-            config('dbadmin.audit.history.enabled') ||
-            config('dbadmin.audit.favorite.enabled');
+        return config('dbadmin.queries.record.editor.enabled') ||
+            config('dbadmin.queries.record.builder.enabled') ||
+            config('dbadmin.queries.record.library.enabled');
     }
 
     /**
@@ -22,13 +22,13 @@ return new class extends Migration
     public function up(): void
     {
         // Do not create the tables if the feature is not enabled.
-        if (!$this->auditEnabled()) {
+        if (!$this->queryRecordEnabled()) {
             return;
         }
 
         $connection = Schema::connection('database.dbadmin');
 
-        $connection->create('dbadmin_owners', function (Blueprint $table) {
+        $connection->create('dbadmin_users', function (Blueprint $table) {
             $table->id();
             $table->string('username', 150);
             $table->unique('username');
@@ -40,8 +40,8 @@ return new class extends Migration
             $table->json('options');
             $table->smallInteger('category');
             $table->timestamp('last_update');
-            $table->unsignedBigInteger('owner_id');
-            $table->foreign('owner_id')->references('id')->on('dbadmin_owners');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('dbadmin_users');
         });
         $connection->create('dbadmin_stored_commands', function (Blueprint $table) {
             $table->id();
@@ -49,15 +49,15 @@ return new class extends Migration
             $table->text('query');
             $table->string('driver', 30);
             $table->timestamp('last_update');
-            $table->unsignedBigInteger('owner_id');
-            $table->foreign('owner_id')->references('id')->on('dbadmin_owners');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('dbadmin_users');
         });
         $connection->create('dbadmin_tags', function (Blueprint $table) {
             $table->id();
             $table->string('title', 150);
-            $table->unsignedBigInteger('owner_id');
-            $table->foreign('owner_id')->references('id')->on('dbadmin_owners');
-            $table->unique('title', 'owner_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('dbadmin_users');
+            $table->unique('title', 'user_id');
         });
         $connection->create('dbadmin_command_tag', function (Blueprint $table) {
             $table->unsignedBigInteger('command_id');
@@ -79,6 +79,6 @@ return new class extends Migration
         $connection->dropIfExists('dbadmin_tags');
         $connection->dropIfExists('dbadmin_stored_commands');
         $connection->dropIfExists('dbadmin_runned_commands');
-        $connection->dropIfExists('dbadmin_owners');
+        $connection->dropIfExists('dbadmin_users');
     }
 };
