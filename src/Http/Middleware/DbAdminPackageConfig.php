@@ -19,17 +19,18 @@ class DbAdminPackageConfig
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Copy the audit options into the DbAdminPackage package options.
+        // Copy the queries options into the DbAdminPackage package options.
         $options = config('jaxon.app.packages')[DbAdminPackage::class];
-        $auditOptions = [
-            'options' => config('dbadmin.audit.options'),
-            'database' => config('dbadmin.audit.database'),
+        $queriesOptions = [
+            'admin' => config('dbadmin.queries.admin'),
+            'record' => config('dbadmin.queries.record'),
+            'database' => config('dbadmin.queries.database'),
         ];
         config([
             'jaxon.app.packages' => [
                 DbAdminPackage::class => [
                     ...$options,
-                    'audit' => $auditOptions,
+                    'queries' => $queriesOptions,
                 ],
             ],
             'jaxon.lib.core.request.uri' => route(name: 'dbadmin.jaxon', absolute: false),

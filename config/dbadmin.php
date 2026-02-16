@@ -11,29 +11,37 @@ return [
     ],
     'users' => [
     ],
-    'audit' => [
-        'options' => [
-            'library' => [
+    'queries' => [
+        'record' => [
+            'builder' => [
                 'enabled' => false,
             ],
-            'enduser' => [
+            'editor' => [
                 'enabled' => false,
             ],
+        ],
+        'admin' => [
             'history' => [
-                'enabled' => false,
+                'show' => false,
                 'distinct' => true,
                 'limit' => 15,
             ],
             'favorite' => [
-                'enabled' => false,
+                'show' => false,
                 'limit' => 10,
+            ],
+            'preferences' => [
+                'enabled' => false,
+            ],
+        ],
+        'audit' => [
+            'enabled' => true,
+            'users' => [
+                // The emails of users that are allowed to access the audit page.
             ],
         ],
         'database' => [
             // Same as the "servers" items, but "name" is the database name.
-        ],
-        'allowed' => [
-            // The emails of users that are allowed to access the audit page.
         ],
     ],
 ];

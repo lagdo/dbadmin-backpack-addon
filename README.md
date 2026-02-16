@@ -208,19 +208,31 @@ The `databases` and `schemas` options restrict the user access to the listed dat
 
 ### Writing in the query audit
 
-The query audit writer options are located in the `audit` section in the `config/dbadmin.php` config file.
+The query audit writer options are located in the `queries` section in the `config/dbadmin.php` config file.
 
 ```php
-    'audit' => [
-        'options' => [
-            'enduser' => [
+    'queries' => [
+        'record' => [
+            'builder' => [
                 'enabled' => true,
             ],
-            'history' => [
+            'editor' => [
                 'enabled' => true,
+            ],
+        ],
+        'admin' => [
+            'history' => [
+                'show' => true,
                 'distinct' => true,
                 'limit' => 10,
             ],
+            'favorite' => [
+                'show' => true,
+                'limit' => 10,
+            ],
+        ],
+        'audit' => [
+            'enabled' => true,
         ],
         'database' => [
             // Same as the "servers" items, but "name" is the database name.
@@ -234,13 +246,14 @@ The query audit writer options are located in the `audit` section in the `config
     ],
 ```
 
-The `audit.database` section contains the audit database connection options.
+The `queries.database` section contains the audit database connection options.
 The options are the same as in the above [database servers](#the-servers-option) options, excepted that the `name` option is the database name.
 
-The `audit.options.enduser.enabled` option enables the audit, for queries executed in the query builder and the query editor.
+The `queries.record` options indicate which queries are saved.
+Recording the queries executed in the query `builder` or the query `editor` can be enabled or disabled here.
 
-The `audit.options.history.enabled` option enables the audit for queries executed in the editor, and the display of the query history in the query editor page.
-When the query history is enabled, the `audit.options.history.distinct` option enables the removal of duplicates in the listed queries, while the `audit.options.history.limit` option sets the max number of queries for pagination.
+When the `queries.admin.history.show` and `queries.admin.favorite.show` options are set to true, the `History` and `Favorites`   tabs are displayed in the query editor page.
+When the query history is enabled, the `queries.admin.history.distinct` option enables the removal of duplicates in the listed queries, while the `queries.admin.history.limit` option sets the max number of queries for pagination.
 
 ## The query history and favorites
 
@@ -255,6 +268,39 @@ Additionally, the user can also save his preferred queries in the audit database
 Both the history and favorites queries are displayed in the query page. From those two tables, the user can copy or insert the query code in the editor.
 
 The queries in the favorites can also be modified or deleted.
+
+### Viewing the query audit
+
+The `Audit logs` page gives access to a page which displays the logged queries.
+
+![screenshot](screenshots/jaxon-dbadmin-audit-logs.png)
+
+The form in the sidebar provides fields to filter the queries based on various criteria.
+
+The database connection options are the same that are used to write the audit logs, as described in the [above section](#writing-in-the-query-audit).
+
+```php
+    'queries' => [
+        'audit' => [
+            'enabled' => true,
+            'users' => [
+                // The emails of users that are allowed to access the audit page.
+                'admin@company.com',
+            ],
+        ],
+        'database' => [
+            // Same as the "servers" items, but "name" is the database name.
+            'driver' => 'pgsql',
+            'host' => "env(LOGGING_DB_HOST)",
+            'port' => "env(LOGGING_DB_PORT)",
+            'username' => "env(LOGGING_DB_USERNAME)",
+            'password' => "env(LOGGING_DB_PASSWORD)",
+            'name' => 'auditdb',
+        ],
+    ],
+```
+
+The access to that page is limited to the user accounts with the email listed in the `queries.audit.users` option in the `config/dbadmin.php` file, when the `queries.audit.enabled` option is set to true.
 
 ### The database config readers
 
@@ -299,18 +345,32 @@ use Lagdo\DbAdmin\Db\Config\AuthInterface;
 use Lagdo\DbAdmin\Db\Config\InfisicalConfigReader;
 use function Jaxon\jaxon;
 
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * @param string $prefix
+     * @param string $option
+     * @param AuthInterface $auth
+     *
+     * @return string
+     */
+    private function getSecretKey(string $prefix, string $option, AuthInterface $auth): string
+    {
+        return "users.{$prefix}.{$option}";
+    }
+
+    /**
+     * Register any application services.
+     */
     public function register(): void
     {
+        // Customize the provided Infisical config reader.
         $this->app->singleton(InfisicalConfigReader::class, function() {
-            $secretKetBuilder = function(string $prefix, string $option, AuthInterface $auth) {
-                // Select a secret key based on the authenticated user, and the option prefix and name.
-                return $secretKey;
-            };
             $reader = jaxon()->di()->g(InfisicalConfigReader::class);
-            $reader->setSecretKeyBuilder($secretKeyBuilder);
-            return $reader;
+            return $reader->setSecretKeyBuilder($this->getSecretKey(...));
         });
     }
+}
 ```
 
 The packages can then be configured to use the Infisical `config reader`, in the `config/jaxon.php` config file.

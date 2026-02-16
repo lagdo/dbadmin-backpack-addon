@@ -120,8 +120,9 @@ class DbAdminServiceProvider extends ServiceProvider
 
         // Auth gate for the DbAdmin audit page
         Gate::define('dbaudit', function(User $user) {
-            $allowed = config('dbadmin.audit.allowed', []);
-            return in_array($user->email, $allowed);
+            $users = config('dbadmin.queries.audit.users', []);
+            return config('dbadmin.queries.audit.enabled', false) &&
+                in_array($user->email, $users);
         });
 
         // Register the middlewares
