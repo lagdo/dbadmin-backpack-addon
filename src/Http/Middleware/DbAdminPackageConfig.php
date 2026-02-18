@@ -34,7 +34,7 @@ class DbAdminPackageConfig
                 ],
             ],
             'jaxon.lib.core.request.uri' => route(name: 'dbadmin.jaxon', absolute: false),
-            'jaxon.app.assets.file' => 'admin-0.2.0',
+            'jaxon.app.assets.file' => 'admin-0.2.1',
         ]);
 
         return $next($request);
